@@ -23,12 +23,34 @@ input.forEach((line) => {
   games.push(gameResult);
 });
 
+const gameMap = new Map();
+
+const getMaxValuesForGame = (game) => {
+  const key = JSON.stringify(game);
+  if (gameMap.has(key)) {
+    return gameMap.get(key);
+  }
+
+  const max = {};
+  max.red = Math.max(...game.reds);
+  max.green = Math.max(...game.greens);
+  max.blue = Math.max(...game.blues);
+
+  gameMap.set(key, max);
+
+  return max;
+};
+
 const result = games.filter((game) => {
-  const maxRed = Math.max(...game.reds);
-  const maxGreen = Math.max(...game.greens);
-  const maxBlue = Math.max(...game.blues);
-  return maxRed <= 12 && maxGreen <= 13 && maxBlue <= 14;
+  const max = getMaxValuesForGame(game);
+  return max.red <= 12 && max.green <= 13 && max.blue <= 14;
+});
+
+const result2 = games.map((game) => {
+  const max = getMaxValuesForGame(game);
+  return max.red * max.green * max.blue;
 });
 
 const sum = result.reduce((a, b) => a + games.indexOf(b) + 1, 0);
-console.log(sum);
+const sum2 = result2.reduce((a, b) => a + b, 0);
+console.log(sum, sum2);
