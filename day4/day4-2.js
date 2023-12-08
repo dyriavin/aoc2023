@@ -1,6 +1,3 @@
-/*
-  Description:
-*/
 const fs = require("fs");
 
 const lines = fs.readFileSync("./input.txt", "utf8").split("\n");
